@@ -10,6 +10,9 @@ export default function NavMenu() {
                 <Container>
                     <div className="d-flex justify-content-between">
                         <NavbarBrand tag={Link} to="/" className="custom-link">Stephen King</NavbarBrand>
+                        <div className="me-5 pt-2">
+                                You are not log in
+                        </div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <ul className="navbar-nav flex-grow">
@@ -23,9 +26,6 @@ export default function NavMenu() {
                         <ul className="navbar-nav flex-grow me-5">
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark custom-link" to="/logIn">Log in</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark custom-link" to="/signUp">Sing up</NavLink>
                             </NavItem>
                         </ul>
                     </div>

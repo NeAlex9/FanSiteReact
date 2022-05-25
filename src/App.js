@@ -4,11 +4,11 @@ import {Routes, Route} from 'react-router-dom';
 import Layout from "./components/Layout";
 import Author from './components/pages/Author'
 import WorksCollectionLayout from "./components/pages/worksPage/WorksCollectionLayout";
-import ImageList from "./components/pages/worksPage/ImageList";
-import TitleList from "./components/pages/worksPage/TitleList";
+import TitleCollection from "./components/pages/worksPage/TitleCollection";
 import LogIn from "./components/pages/LogIn";
 import SignUp from "./components/pages/SignUp";
 import Media from "./components/pages/mediaPage/Media";
+import ImageCollection from "./components/pages/worksPage/ImageCollection";
 
 function App() {
   return (
@@ -16,8 +16,8 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Author/>}/>
           <Route exact path='/works' element={<WorksCollectionLayout/>}>
-            <Route index element={<ImageList/>}/>
-            <Route path={"TitleList"} element={<TitleList/>}/>
+            <Route index element={<ImageCollection/>}/>
+            <Route path={"TitleCollection"} element={<TitleCollection/>}/>
           </Route>
           <Route path={"media"} >
             <Route path={":id"} element={<Media />}/>
