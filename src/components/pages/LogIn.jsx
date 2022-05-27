@@ -3,6 +3,8 @@ import Alert from '@mui/material/Alert';
 import * as Yup from "yup";
 import AuthenticationComponent from "./AuthenticationComponent";
 import {AuthenticationService} from "../../services/AuthenticationService";
+import {Link} from 'react-router-dom';
+import {NavLink} from "reactstrap";
 
 export default function LogIn() {
 
@@ -30,7 +32,7 @@ export default function LogIn() {
                     />
                     <div className="invalid-feedback">{errors.email?.message}</div>
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label>Password</label>
                     <input
                         name="password"
@@ -41,10 +43,14 @@ export default function LogIn() {
                     />
                     <div className="invalid-feedback">{errors.password?.message}</div>
                 </div>
-                <div className="d-grid">
+                <div className="d-grid mb-4">
                     <button type="submit" className="btn btn-primary">
                         Submit
                     </button>
+                </div>
+                <div className="d-flex flex-row">
+                    <span>Don't have an account?</span>
+                    <NavLink style={{padding:"0 0 0 0.5rem"}} tag={Link} className="text-primary custom-link" to="/signUp">Sign up.</NavLink>
                 </div>
                 <Snackbar className="mt-5 p-5"
                           open={openError}

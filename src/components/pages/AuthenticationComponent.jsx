@@ -3,10 +3,14 @@ import {UserService} from "../../services/UserService";
 import {useNavigate} from "react-router-dom";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {authThunk} from "../../features/authSlice";
+
 
 export default function AuthenticationComponent({render, authFunc, validationScheme, errorMessages}) {
 
-    const [auth, setAuth] = useState({isLogged: false, message: null, user: null});
+    const auth = useSelector(state=> state.authReducer);
+    const dispatch = useDispatch();
     const [openError, setError] = useState(false);
     const navigate = useNavigate();
 
@@ -15,15 +19,13 @@ export default function AuthenticationComponent({render, authFunc, validationSch
     const {errors} = formState;
 
     async function onSubmit(data) {
-        const auth = await authenticate(data)
-        setAuth(auth);
-
-        if (!auth.isLogged) {
-            setError(true);
-            return;
+        const result = await dispatch(authThunk({authFunc: authFunc, data: data, errorMessages: errorMessages}));
+        if (result.payload.isLogged){
+            navigate("/works");
         }
-
-        navigate("/works");
+        else {
+            setError(true);
+        }
     }
 
     function onErrorMessageAppeared(e, reason) {
@@ -32,21 +34,6 @@ export default function AuthenticationComponent({render, authFunc, validationSch
         }
 
         setError(false);
-    }
-
-    async function authenticate(data) {
-        const response = await authFunc(data);
-        try {
-            if (response.status !== 200) {
-                return {isLogged: false, message: errorMessages.failedMessage, user: null};
-            }
-
-            const userService = new UserService();
-            const user = await userService.GetUserByEmail(data.email);
-            return {isLogged: true, message: "Success", user: user};
-        } catch (e) {
-            return {isLogged: false, message: errorMessages.unexpectedMessage, user: null};
-        }
     }
 
     return render(handleSubmit(onSubmit), errors, openError, onErrorMessageAppeared, auth, register);
