@@ -1,5 +1,4 @@
 import {useState} from "react";
-import {UserService} from "../../services/UserService";
 import {useNavigate} from "react-router-dom";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
@@ -9,7 +8,7 @@ import {authThunk} from "../../features/authSlice";
 
 export default function AuthenticationComponent({render, authFunc, validationScheme, errorMessages}) {
 
-    const auth = useSelector(state=> state.authReducer);
+    const store = useSelector(state => state);
     const dispatch = useDispatch();
     const [openError, setError] = useState(false);
     const navigate = useNavigate();
@@ -20,10 +19,9 @@ export default function AuthenticationComponent({render, authFunc, validationSch
 
     async function onSubmit(data) {
         const result = await dispatch(authThunk({authFunc: authFunc, data: data, errorMessages: errorMessages}));
-        if (result.payload.isLogged){
+        if (result.payload.isLogged) {
             navigate("/works");
-        }
-        else {
+        } else {
             setError(true);
         }
     }
@@ -36,5 +34,5 @@ export default function AuthenticationComponent({render, authFunc, validationSch
         setError(false);
     }
 
-    return render(handleSubmit(onSubmit), errors, openError, onErrorMessageAppeared, auth, register);
+    return render(handleSubmit(onSubmit), errors, openError, onErrorMessageAppeared, store.auth, register);
 }

@@ -1,5 +1,5 @@
 import {Container, Navbar, NavbarBrand, NavItem, NavLink} from 'reactstrap';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import './NavMenu.css';
 import {useSelector, useDispatch} from "react-redux";
 import Avatar from '@mui/material/Avatar';
@@ -12,9 +12,8 @@ import {logOutThunk} from "../features/authSlice";
 
 export default function NavMenu() {
 
-    const auth = useSelector(state => state.authReducer);
+    const store = useSelector(state => state);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const logOutHandler = async ()=>{
         dispatch(logOutThunk());
@@ -35,13 +34,13 @@ export default function NavMenu() {
     };
 
     const authHeader = () => {
-        if (auth.isLogged) {
+        if (store.auth.isLogged) {
             return (
                 <div className="d-flex flex-row align-content-center">
-                    <span style={{paddingTop: "0.9rem", paddingRight: "1rem"}}>Hello, {auth.user.name}!</span>
+                    <span style={{paddingTop: "0.9rem", paddingRight: "1rem"}}>Hello, {store.auth.user.name}!</span>
                     <IconButton style={{paddingTop: "0.35rem"}} onClick={handleOpenUserMenu} sx={{p: 0}}>
                         <Avatar sx={{bgcolor: deepOrange[400]}}>
-                            {auth.user.name[0].toUpperCase()}
+                            {store.auth.user.name[0].toUpperCase()}
                         </Avatar>
                     </IconButton>
                     <Menu
@@ -94,7 +93,7 @@ export default function NavMenu() {
                             </NavItem>
                         </ul>
                         <ul className="navbar-nav flex-grow me-5">
-                            {auth.isLogged ?
+                            {store.auth.isLogged ?
                                 "" :
                                 (<NavItem>
                                     <NavLink tag={Link} className="text-dark custom-link" to="/logIn">Log in</NavLink>
