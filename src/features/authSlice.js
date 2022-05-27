@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {UserService} from "../services/UserService";
+import {AuthenticationService} from "../services/AuthenticationService";
 
 const initialState = {
     isLogged: false,
@@ -8,7 +9,7 @@ const initialState = {
 }
 
 export const authThunk = createAsyncThunk(
-    "auth/auth",
+    "auth/authenticate",
     async (parameters) => {
         const authResponse = {isLogged: false, message: null, user: null};
         const response = await parameters.authFunc(parameters.data);
@@ -26,6 +27,24 @@ export const authThunk = createAsyncThunk(
     }
 );
 
+export const logOutThunk = createAsyncThunk(
+    "auth/logOut",
+    async () => {
+        let authService = new AuthenticationService();
+        try {
+            const response = await authService.logOut();
+            if (response.status !== 200) {
+                return {result: false};
+            }
+
+            return {result: true, isLogged: false, user: {}, message: "",};
+        } catch (e) {
+            console.log(e);
+            return {result: false};
+        }
+    }
+)
+
 const authSlice = createSlice({
     name: "auth",
     initialState: initialState,
@@ -35,6 +54,13 @@ const authSlice = createSlice({
                 state.isLogged = action.payload.isLogged;
                 state.user = action.payload.user;
                 state.message = action.payload.message;
+            })
+            .addCase(logOutThunk.fulfilled, (state, action) => {
+                if (action.payload.result) {
+                    state.isLogged = action.payload.isLogged;
+                    state.user = action.payload.user;
+                    state.message = action.payload.message;
+                }
             })
     }
 })
