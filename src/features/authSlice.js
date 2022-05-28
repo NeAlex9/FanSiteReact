@@ -45,21 +45,23 @@ export const logOutThunk = createAsyncThunk(
     }
 )
 
+const assignToState = (state, payload) => {
+    state.isLogged = payload.isLogged;
+    state.user = payload.user;
+    state.message = payload.message;
+}
+
 const authSlice = createSlice({
     name: "auth",
     initialState: initialState,
     extraReducers: (builder) => {
         builder
             .addCase(authThunk.fulfilled, (state, action) => {
-                state.isLogged = action.payload.isLogged;
-                state.user = action.payload.user;
-                state.message = action.payload.message;
+                assignToState(state, action.payload);
             })
             .addCase(logOutThunk.fulfilled, (state, action) => {
                 if (action.payload.result) {
-                    state.isLogged = action.payload.isLogged;
-                    state.user = action.payload.user;
-                    state.message = action.payload.message;
+                    assignToState(state, action.payload);
                 }
             })
     }

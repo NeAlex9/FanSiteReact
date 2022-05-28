@@ -1,7 +1,7 @@
 import {Container, Navbar, NavbarBrand, NavItem, NavLink} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import './NavMenu.css';
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import {useState} from "react";
@@ -15,7 +15,7 @@ export default function NavMenu() {
     const store = useSelector(state => state);
     const dispatch = useDispatch();
 
-    const logOutHandler = async ()=>{
+    const logOutHandler = async () => {
         dispatch(logOutThunk());
     }
 
@@ -79,7 +79,7 @@ export default function NavMenu() {
         <header>
             <Navbar light className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3">
                 <Container>
-                    <div className="d-flex justify-content-between">
+                    <div style={{height:"2.70rem"}} className="d-flex justify-content-between">
                         <NavbarBrand tag={Link} to="/" className="custom-link">Stephen King</NavbarBrand>
                         {authHeader()}
                     </div>
