@@ -6,18 +6,18 @@ export function FilterForm() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [state, setState] = useState(
         {
-            yearsFrom: searchParams.get("yearFrom") !== null ? parseInt(searchParams.get("yearFrom")) : 0,
-            yearsTo: searchParams.get("yearTo") !== null ? parseInt(searchParams.get("yearTo")) : 0,
-            ratingFrom: searchParams.get("ratingFrom") !== null ? parseInt(searchParams.get("ratingFrom")) : 0,
-            ratingTo: searchParams.get("ratingTo") !== null ? parseInt(searchParams.get("ratingTo")) : 0,
-            mediaType: searchParams.get("mediaType") !== null ? parseInt(searchParams.get("mediaType")) : 0,
+            yearsFrom: searchParams.get("yearsFrom") !== null ? parseInt(searchParams.get("yearsFrom")) : "",
+            yearsTo: searchParams.get("yearsTo") !== null ? parseInt(searchParams.get("yearsTo")) : "",
+            ratingFrom: searchParams.get("ratingFrom") !== null ? parseInt(searchParams.get("ratingFrom")) : "",
+            ratingTo: searchParams.get("ratingTo") !== null ? parseInt(searchParams.get("ratingTo")) : "",
+            mediaType: searchParams.get("mediaType") !== null ? parseInt(searchParams.get("mediaType")) : "",
         });
 
     function onSubmit(e) {
         e.preventDefault();
         const searchObject = Object.fromEntries([...searchParams]);
         for (const key in state) {
-            if (state[key] !== 0 && state[key] !== "" && Number(state[key])) {
+            if (state[key] !== "" && !isNaN(state[key])) {
                 searchObject[key] = state[key];
             } else {
                 delete searchObject[key];
@@ -29,11 +29,14 @@ export function FilterForm() {
 
     function onChangeCheckboxValue(e, key, number) {
         const previous = state.mediaType;
+        let actual;
         if (e.target.checked) {
-            setState(state => ({...state, [key]: previous | number}));
+            actual = previous | number;
         } else {
-            setState(state => ({...state, [key]: previous ^ number}));
+            actual = previous ^ number;
         }
+
+        setState(state => ({...state, [key]: actual === 0 ? "" : actual}));
     }
 
     function onChangeFilterRange(e, key) {
@@ -55,9 +58,10 @@ export function FilterForm() {
             </>);
     }
 
-    function renderInput(handler, placeholder) {
+    function renderInput(handler, placeholder, value) {
         return (
             <input style={{display: "block", height: "1.5rem", width: "5rem"}}
+                   value={value}
                    onChange={handler}
                    placeholder={placeholder}
                    type="number"/>
@@ -71,11 +75,12 @@ export function FilterForm() {
                 <h5>Years</h5>
                 <div className="d-flex flex-row m-1 align-items-center">
                     {renderInput((e) => {
-                        onChangeFilterRange(e, "yearsFrom")
-                    }, 1977)}
+                            onChangeFilterRange(e, "yearsFrom")
+                        }
+                        , 1977, state.yearsFrom)}
                     {renderInput((e) => {
                         onChangeFilterRange(e, "yearsTo")
-                    }, 2022)}
+                    }, 2022, state.yearsTo)}
                 </div>
             </div>
 
@@ -94,10 +99,10 @@ export function FilterForm() {
                 <div className="d-flex flex-row m-1 align-items-center">
                     {renderInput((e) => {
                         onChangeFilterRange(e, "ratingFrom")
-                    }, 0)}
+                    }, 0, state.ratingFrom)}
                     {renderInput((e) => {
                         onChangeFilterRange(e, "ratingTo")
-                    }, 10)}
+                    }, 10, state.ratingTo)}
                 </div>
             </div>
 
