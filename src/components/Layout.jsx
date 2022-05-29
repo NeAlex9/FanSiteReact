@@ -4,12 +4,12 @@ import Footer from "./Footer";
 
 export default function Layout(props) {
     return (
-        <div style={{backgroundImage:`url(background.png)`}}>
+        <div style={{backgroundImage: `url(background.png)`}}>
             <NavMenu/>
             <Container>
                 {props.children}
             </Container>
-            <Footer />
+            <Footer/>
         </div>
     );
 }

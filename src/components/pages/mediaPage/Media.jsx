@@ -1,8 +1,14 @@
 import {useParams} from "react-router-dom";
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import MediaService from "../../../services/MediaService";
+import {CommentComponent} from "./CommentComponent";
+import {CommentService} from "../../../services/CommentService";
+import {Divider, Paper} from "@mui/material";
+import {CommentForm} from "./CommentForm";
+import {useSelector} from "react-redux";
 
 export default function Media() {
+    const store = useSelector(state => state);
     const params = useParams();
     const [state, setState] = useState(
         {
@@ -11,41 +17,34 @@ export default function Media() {
             isLoaded: false,
         }
     );
-
-   // const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState([]);
 
     useEffect(() => {
-        fetchMedia(state.id)
+        const fetcher = new MediaService();
+        fetcher.GetMediaById(state.id)
             .then(media => {
-                let index = media.publicationDate.indexOf(":");
+                const index = media.publicationDate.indexOf(":");
                 media.publicationDate = media.publicationDate.substring(0, index - 3);
-                setState(state =>
-                    ({...state, isLoaded: true, media: media}))
+                setState(state => ({...state, isLoaded: true, media: media}));
             })
-            .catch(error => {
-                console.log(error);
-            });
+            .catch(e => {
+                console.log(e);
+            })
 
-        //fetchComments(state.id);
+        fetchComments(state.id);
     }, [])
 
-    function fetchMedia(id) {
-        let fetcher = new MediaService();
-        return fetcher.GetMediaById(id);
+    async function fetchComments(mediaId) {
+        const fetcher = new CommentService();
+        try {
+            const comments = await fetcher.fetchCommentsByMediaId(mediaId);
+            setComments(comments);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
-    // function fetchComments(mediaId) {
-    //     let fetcher = new CommentService();
-    //     fetcher.fetchCommentsByMediaId(mediaId)
-    //         .then(comments => {
-    //             setComments(comments);
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }
-
-    return  !state.isLoaded ?
+    return !state.isLoaded ?
         (
             <div/>
         ) :
@@ -99,6 +98,21 @@ export default function Media() {
                         </div>
                     </div>
                 </div>
+
+                <div className="h2 mb-5">
+                    Comments
+                </div>
+                <Paper style={{padding: "15px 15px", width: "76%"}}>
+                    {comments.map((comment, number) =>
+                        <>
+                            <CommentComponent comment={comment} key={comment.id}/>
+                            {(comments.length - 1) !== number
+                                ? <Divider variant="fullWidth" style={{margin: "10px 0"}}/>
+                                : ""}
+                        </>
+                    )}
+                </Paper>
+                <CommentForm updateComments={fetchComments} userId={store.auth.user?.id ?? 0} mediaId={state.media.id}/>
             </div>
         );
 }

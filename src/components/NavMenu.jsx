@@ -8,6 +8,7 @@ import {useState} from "react";
 import {Menu, MenuItem} from "@mui/material";
 import {deepOrange} from '@mui/material/colors';
 import {logOutThunk} from "../features/authSlice";
+import ColoredAvatar from "./ColoredAvatar";
 
 
 export default function NavMenu() {
@@ -39,9 +40,7 @@ export default function NavMenu() {
                 <div className="d-flex flex-row align-content-center">
                     <span style={{paddingTop: "0.9rem", paddingRight: "1rem"}}>Hello, {store.auth.user.name}!</span>
                     <IconButton style={{paddingTop: "0.35rem"}} onClick={handleOpenUserMenu} sx={{p: 0}}>
-                        <Avatar sx={{bgcolor: deepOrange[400]}}>
-                            {store.auth.user.name[0].toUpperCase()}
-                        </Avatar>
+                        <ColoredAvatar name={store.auth.user.name}/>
                     </IconButton>
                     <Menu
                         sx={{mt: '45px'}}
