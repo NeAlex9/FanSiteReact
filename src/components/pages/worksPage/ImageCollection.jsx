@@ -15,7 +15,7 @@ export default function ImageCollection() {
             :
             (
                 <div style={{height: "36.7vw"}}>
-                    {/*<LoadingComponent/>*/}
+
                 </div>
             );
     }

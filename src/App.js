@@ -14,10 +14,9 @@ function App() {
   return (
       <Layout>
         <Routes>
-          <Route exact path='/' element={<Author/>}/>
-          <Route exact path='/works' element={<WorksCollectionLayout/>}>
+          <Route exact path='/' element={<WorksCollectionLayout/>}>
             <Route index element={<ImageCollection/>}/>
-            <Route path={"TitleCollection"} element={<TitleCollection/>}/>
+            <Route path={"TitleList"} element={<TitleCollection/>}/>
           </Route>
           <Route path={"media"} >
             <Route path={":id"} element={<Media />}/>

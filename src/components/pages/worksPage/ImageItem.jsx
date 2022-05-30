@@ -15,13 +15,15 @@ export default class ImageItem extends Component {
     }
 
     render() {
+
         let {
             photo, title, type, publicationDate, id
         } = this.state;
-        let index = publicationDate.indexOf(":");
-        let date = publicationDate.substring(0, index - 3);
+        const index = publicationDate.indexOf(":");
+        const date = publicationDate.substring(0, index - 3);
         photo = "data:image/png;base64," + photo;
-        let url = `/media/${id}`;
+
+        const url = `/media/${id}`;
         return (
             <div className="p-2 column">
                 <Link style={{display: "block"}} to={url} >

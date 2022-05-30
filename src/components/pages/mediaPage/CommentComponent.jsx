@@ -1,5 +1,6 @@
 import {Grid} from "@mui/material";
 import ColoredAvatar from "../../ColoredAvatar";
+import {useState} from "react";
 
 export function CommentComponent({comment}) {
 
@@ -11,8 +12,8 @@ export function CommentComponent({comment}) {
     }
 
     function getCommentText(text) {
-        return text.split(/\r\n|\n|\r/gm).map(line => {
-            return (<>{line}<br/></>)
+        return text.split(/\r\n|\n|\r/gm).map((line) => {
+            return (<>{line}< br/></>)
         })
     }
 

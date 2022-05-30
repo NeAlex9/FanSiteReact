@@ -10,7 +10,7 @@ export function FilterForm() {
             yearsTo: searchParams.get("yearsTo") !== null ? parseInt(searchParams.get("yearsTo")) : "",
             ratingFrom: searchParams.get("ratingFrom") !== null ? parseInt(searchParams.get("ratingFrom")) : "",
             ratingTo: searchParams.get("ratingTo") !== null ? parseInt(searchParams.get("ratingTo")) : "",
-            mediaType: searchParams.get("mediaType") !== null ? parseInt(searchParams.get("mediaType")) : "",
+            mediaType: searchParams.get("mediaType") !== null ? parseInt(searchParams.get("mediaType")) : 3,
         });
 
     function onSubmit(e) {
@@ -36,7 +36,7 @@ export function FilterForm() {
             actual = previous ^ number;
         }
 
-        setState(state => ({...state, [key]: actual === 0 ? "" : actual}));
+        setState(state => ({...state, [key]: actual}));
     }
 
     function onChangeFilterRange(e, key) {

@@ -2,11 +2,9 @@ import {Container, Navbar, NavbarBrand, NavItem, NavLink} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import './NavMenu.css';
 import {useDispatch, useSelector} from "react-redux";
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import {useState} from "react";
 import {Menu, MenuItem} from "@mui/material";
-import {deepOrange} from '@mui/material/colors';
 import {logOutThunk} from "../features/authSlice";
 import ColoredAvatar from "./ColoredAvatar";
 
@@ -20,10 +18,9 @@ export default function NavMenu() {
         dispatch(logOutThunk());
     }
 
-    const settings = ["Account", "Logout"];
+    const settings = ["Logout"];
     const settingComponents = [
-        <NavLink tag={Link} className="text-dark custom-link" to="/account">{settings[0]}</NavLink>,
-        <NavLink tag={Link} onClick={logOutHandler} className="text-dark custom-link" to={"#"}>{settings[1]}</NavLink>,
+        <NavLink tag={Link} onClick={logOutHandler} className="text-dark custom-link" to={"#"}>{settings[0]}</NavLink>,
     ]
 
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -78,17 +75,14 @@ export default function NavMenu() {
         <header>
             <Navbar light className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3">
                 <Container>
-                    <div style={{height:"2.70rem"}} className="d-flex justify-content-between">
+                    <div style={{height: "2.70rem"}} className="d-flex justify-content-between">
                         <NavbarBrand tag={Link} to="/" className="custom-link">Stephen King</NavbarBrand>
                         {authHeader()}
                     </div>
                     <div className="d-flex justify-content-between">
                         <ul className="navbar-nav flex-grow">
                             <NavItem>
-                                <NavLink tag={Link} className="text-dark custom-link" to="/">About author</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark custom-link" to="/works">Works</NavLink>
+                                <NavLink tag={Link} className="text-dark custom-link" to="/">Works</NavLink>
                             </NavItem>
                         </ul>
                         <ul className="navbar-nav flex-grow me-5">

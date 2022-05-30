@@ -1,23 +1,30 @@
-import ImageItem from "./ImageItem";
 import Collection from "./Collection";
+import {TitleItem} from "./TitleItem";
 
-export default function TitleCollection(){
+export default function TitleCollection() {
 
     function render(state) {
-        return state.isLoaded ?
-            (
-                <div className='my_row'>
-                    {state.media.map((media) =>
-                        <ImageItem key={media.id} media={media}/>
+        return state.isLoaded ? (
+                <table className="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Rating</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {state.media.map((media, index) =>
+                        <TitleItem key={media.id} index={index} media={media}/>
                     )}
-                </div>
+                    </tbody>
+                </table>
             )
-            :
-            (
-                <div style={{height: "36.7vw"}}>
-                    {/*<LoadingComponent/>*/}
-                </div>
-            );
+            : (<div style={{height: "36.7vw"}}>
+
+            </div>)
     }
 
     return <Collection render={render}/>;

@@ -44,6 +44,21 @@ export default function Media() {
         }
     }
 
+    function CommentsComponent(comments) {
+        return (comments.length !== 0
+            ? <Paper style={{padding: "15px 15px", width: "76%"}}>
+                {comments.map((comment, number) =>
+                    <>
+                        <CommentComponent comment={comment} key={comment.id}/>
+                        {(comments.length - 1) !== number
+                            ? <Divider key={number} variant="fullWidth" style={{margin: "10px 0"}}/>
+                            : ""}
+                    </>
+                )}
+            </Paper>
+            : "");
+    }
+
     return !state.isLoaded ?
         (
             <div/>
@@ -102,16 +117,7 @@ export default function Media() {
                 <div className="h2 mb-5">
                     Comments
                 </div>
-                <Paper style={{padding: "15px 15px", width: "76%"}}>
-                    {comments.map((comment, number) =>
-                        <>
-                            <CommentComponent comment={comment} key={comment.id}/>
-                            {(comments.length - 1) !== number
-                                ? <Divider variant="fullWidth" style={{margin: "10px 0"}}/>
-                                : ""}
-                        </>
-                    )}
-                </Paper>
+                {CommentsComponent(comments)}
                 <CommentForm updateComments={fetchComments} userId={store.auth.user?.id ?? 0} mediaId={state.media.id}/>
             </div>
         );
